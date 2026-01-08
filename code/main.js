@@ -17,15 +17,19 @@ function getQueryParams(score) {
 let highScore = localStorage.getItem("highScore") || 0
 localStorage.setItem("highScore", highScore)
 
-SNYK_COLOR_PURPLE = [229, 85, 172];
-SNYK_COLOR_ORANGE = [249, 144, 72];
+// Purple palette - Snyk brand guidelines (for game-over text and UI)
+SNYK_COLOR_PURPLE = [68, 28, 153];        // #441C99 - brand purple
+SNYK_COLOR_PURPLE_LIGHT = [107, 61, 196]; // #6B3DC4 - light purple
+SNYK_COLOR_PURPLE_DARK = [46, 17, 102];   // #2E1166 - dark purple
+SNYK_COLOR_PURPLE_DEEP = [26, 11, 61];    // #1A0B3D - deep purple
+SNYK_COLOR_ORANGE = [244, 143, 177];
 
 // initialize context
 kaplay({
   crisp: false,
   width: 1080,
   height: 720,
-  background: [9,5,45],
+  background: [68, 28, 153],  // #441C99 - brand purple to match website
   scale: 1,
   canvas: document.getElementById('game'),
 })
@@ -41,8 +45,10 @@ loadSprite('share-bluesky', 'sprites/8bit-bs.svg')
 
 loadSprite("background-menu", "sprites/bg-snyk-menu.png")
 
+
 loadSprite('logo-small', 'sprites/vuln-vortex-logo.png')
-loadSprite("logo", "sprites/vuln-vortex-logo-start.svg")
+loadSprite("logo", "sprites/fetch-the-flag-ctf-logo.svg")
+loadSprite("intro-players", "sprites/Group1327.png")
 
 // Work created by me
 loadPedit("npmbox", "sprites/npmbox-animated.pedit")
@@ -55,7 +61,7 @@ loadSprite("Mode-protected", "sprites/protected.png");
 loadSprite("Mode-filterdevs", "sprites/ai-fix.png");
 
 // official Snyk source
-loadSprite("dog", "sprites/dog_brown.png", {
+loadSprite("dog", "sprites/player.png", {
   sliceX: 3,
   sliceY: 2,
   anims: {
@@ -331,7 +337,7 @@ scene("game", () => {
   add([
     sprite("background"),
     pos(0, 0),
-    scale(1)
+    scale(0.51)
   ])
 
   const scoreLabel = add([
@@ -355,7 +361,7 @@ scene("game", () => {
     outline(4),
     area(),
     body({ isStatic: true }),
-    color(128,0,128)
+    color(68, 28, 153)  // #441C99 - brand purple to match game background
   ])
 
   // add a character to screen
@@ -748,8 +754,8 @@ scene("lose", ({packageInfo}) => {
   
   add([
     pos(XPosStart, 80),
-    sprite("logo-small"),
-    scale(0.3)
+    sprite("logo"),
+    scale(0.18)
   ])
 
   const YPosStartText = 200
@@ -786,7 +792,7 @@ scene("lose", ({packageInfo}) => {
       font: 'jersey',
     }),
     pos(XPosStart * 2, YPosStartText + 80),
-    color(...SNYK_COLOR_ORANGE)
+    color(255, 255, 255)
   ])
 
   add([
@@ -795,7 +801,7 @@ scene("lose", ({packageInfo}) => {
       font: 'jersey',
     }),
 		pos(XPosStart, YPosStartText + 135),
-    color(200, 200, 200)
+    color(255, 255, 255)
 	])
 
   const btnShareLinkedIn = add([
@@ -842,7 +848,7 @@ scene("lose", ({packageInfo}) => {
 	])
 
   add([
-    text(`UH OH! A SECURITY VULNERABILITY TOOK YOU DOWN :(\n\nPRESS SPACE OR CLICK RESTART GAME TO TRY AGAIN\n\nTHE SNYK VULNERABILITY DATABASE HELP TEAMS\nSTAY AHEAD OF RISKS LIKE [orange]${vulnTitle}[/orange]\nWITH REAL TIME DATA AND INSIGHTS`, {
+    text(`Even NahamSec and Patch can't dodge every vulnerability :(\n\nPress SPACE to retry or click RESTART\n\nIn CTF competitions, knowing how to spot and exploit weaknesses\nis the difference between Game Over and the leaderboard.`, {
       font: 'jersey',
       size: 28,
       // align: 'center',
@@ -854,6 +860,7 @@ scene("lose", ({packageInfo}) => {
     }),
 		pos(XPosStart, YPosStartText + 200),
     area({ cursor: "pointer", height: 250 }),
+    color(0, 0, 0)
 	])
 
   add([
@@ -892,13 +899,13 @@ scene("lose", ({packageInfo}) => {
     pos(XPosStart + 290, YPosStartText + 432),
     area(),
     anchor("center"),
-    outline(2, rgb(...SNYK_COLOR_ORANGE)),
-    color(...SNYK_COLOR_ORANGE),
+    outline(2, rgb(0, 0, 0)),
+    color(0, 0, 0),
   ]);
 
   // add a child object that displays the text
   btnSeeVulnerability.add([
-      text('OPEN VULNERABILITY', {
+      text('Learn How to Solve CTFs', {
         size: 22,
         font: 'jersey',
       }),
@@ -906,7 +913,7 @@ scene("lose", ({packageInfo}) => {
       color(255, 255, 255),
   ]);
 
-  btnSeeVulnerability.onClick(() => window.open(vulnURL, '_blank'));
+  btnSeeVulnerability.onClick(() => window.open('https://go.snyk.io/0115-ctf-101-isc2.html', '_blank'));
 
   setTimeout(() => onKeyPress('space', restartGame), 2000);
 
@@ -938,6 +945,12 @@ scene('credits-0', () => {
   gameMusic.stop()
   soundThunder.stop()
 
+  add([
+    pos(width()/2 + 200, 380),
+    sprite("intro-players"),
+    scale(0.18)
+  ])
+
   focus()
 
   add([
@@ -946,7 +959,7 @@ scene('credits-0', () => {
     rotate(0),
     area(),
     anchor('center'),
-    scale(1),
+    scale(0.5),
   ])
 
   const txt = 'PRESS SPACE TO START'

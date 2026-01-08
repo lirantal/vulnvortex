@@ -59,8 +59,16 @@
     ></script>
 
     <style>
+      :root {
+        /* Purple palette - Snyk brand guidelines */
+        --purple-brand: #441C99;
+        --purple-light: #6B3DC4;
+        --purple-dark: #2E1166;
+        --purple-deep: #1A0B3D;
+      }
+
       body {
-        background-color: #09052d;
+        background: linear-gradient(180deg, var(--purple-brand) 0%, var(--purple-deep) 100%);
         color: #fff;
         min-height: 100vh;
         display: flex;
@@ -68,7 +76,7 @@
       }
 
       .canvas-holder {
-        background-color: #09052d;
+        background-color: transparent;
         width: 100%;
         text-align: center;
         margin: auto;
@@ -102,8 +110,7 @@
       }
 
       nav {
-        /* background-color: white; */
-        background-color: rgba(3, 3, 40, 0.8);
+        background-color: rgba(20, 16, 61, 0.9);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -121,12 +128,12 @@
       }
 
       .button {
-        background-color: rgb(62, 162, 255); /* Blue color */
-        color: rgb(3, 3, 40);
+        background-color: rgb(255, 255, 255); /* White color */
+        color: #441C99;
         line-height: 1.5;
         padding: 10px 20px;
         border: none;
-        border-color: #145deb;
+        border-color: #6B3DC4;
 
         cursor: pointer;
         margin-left: 10px; /* Add spacing between buttons */
@@ -139,12 +146,11 @@
       }
 
       .button-secondary {
-        background-color: rgb(62, 162, 255); /* Blue color */
-        color: rgb(3, 3, 40);
+        background-color: transparent;
+        color: rgb(255, 255, 255);
         line-height: 1.5;
         padding: 10px 20px;
-        border: none;
-        border-color: #145deb;
+        border: 2px solid rgb(255, 255, 255);
 
         cursor: pointer;
         margin-left: 10px; /* Add spacing between buttons */
