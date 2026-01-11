@@ -23,6 +23,11 @@ SNYK_COLOR_PURPLE_LIGHT = [107, 61, 196]; // #6B3DC4 - light purple
 SNYK_COLOR_PURPLE_DARK = [46, 17, 102];   // #2E1166 - dark purple
 SNYK_COLOR_PURPLE_DEEP = [26, 11, 61];    // #1A0B3D - deep purple
 SNYK_COLOR_ORANGE = [244, 143, 177];
+// UI box and text colors for start/end screens
+SNYK_COLOR_BOX_DARK = [120, 42, 65];      // #782A41 - dark box background
+SNYK_COLOR_PINK = [249, 122, 153];        // #F97A99 - pink text accent
+SNYK_COLOR_ELECTRIC_BLUE = [20, 93, 235]; // #145DEB - electric blue button fill
+SNYK_COLOR_CYAN = [20, 196, 235];         // #14C4EB - cyan accent line
 
 // initialize context
 kaplay({
@@ -327,7 +332,7 @@ scene("game", () => {
   packagesAnimType = 'regular'
 
   let JUMP_FORCE = 705
-  const FLOOR_HEIGHT = 48
+  const FLOOR_HEIGHT = 60
   const MOVE_SPEED = 200
   
   // define gravity
@@ -337,7 +342,7 @@ scene("game", () => {
   add([
     sprite("background"),
     pos(0, 0),
-    scale(0.51)
+    scale(0.50)
   ])
 
   const scoreLabel = add([
@@ -358,10 +363,9 @@ scene("game", () => {
   platform = add([ 
     rect(width(), FLOOR_HEIGHT),
     pos(0, height() - FLOOR_HEIGHT),
-    outline(4),
     area(),
     body({ isStatic: true }),
-    color(68, 28, 153)  // #441C99 - brand purple to match game background
+    opacity(0),
   ])
 
   // add a character to screen
@@ -751,6 +755,14 @@ scene("lose", ({packageInfo}) => {
     pos(0, 0),
     scale(0.4)
   ])
+
+  // Dark box behind content to make text pop
+  add([
+    rect(970, 650, { radius: 10 }),
+    pos(XPosStart - 180, 50),
+    color(...SNYK_COLOR_BOX_DARK),
+    opacity(0.95),
+  ])
   
   add([
     pos(XPosStart, 80),
@@ -765,6 +777,7 @@ scene("lose", ({packageInfo}) => {
       font: 'jersey',
     }),
     pos(XPosStart, YPosStartText),
+    color(255, 255, 255)
 	])
 
   const vulnTitle = String(packageInfo.vulnerability).toUpperCase()
@@ -783,7 +796,7 @@ scene("lose", ({packageInfo}) => {
       font: 'jersey',
     }),
 		pos(XPosStart, YPosStartText + 80),
-    color(...SNYK_COLOR_PURPLE)
+    color(...SNYK_COLOR_PINK)
 	])
 
   add([
@@ -844,14 +857,13 @@ scene("lose", ({packageInfo}) => {
       font: 'jersey',
     }),
 		pos(XPosStart, YPosStartText + 170),
-    color(180, 180, 180)
+    color(...SNYK_COLOR_PINK)
 	])
 
   add([
     text(`Even NahamSec and Patch can't dodge every vulnerability :(\n\nPress SPACE to retry or click RESTART\n\nIn CTF competitions, knowing how to spot and exploit weaknesses\nis the difference between Game Over and the leaderboard.`, {
       font: 'jersey',
       size: 28,
-      // align: 'center',
       styles: {
         "orange": {
           color: rgb(...SNYK_COLOR_ORANGE),
@@ -860,12 +872,13 @@ scene("lose", ({packageInfo}) => {
     }),
 		pos(XPosStart, YPosStartText + 200),
     area({ cursor: "pointer", height: 250 }),
-    color(0, 0, 0)
+    color(255, 255, 255)
 	])
 
   add([
 		text('Media assets credit to: opengameart.org, mixkit.co.', { font: 'jersey', size: 16 }),
 		pos(XPosStart, height() / 2 + 320),
+    color(...SNYK_COLOR_PINK)
 	])
 
   const restartGame = () => {
@@ -878,8 +891,8 @@ scene("lose", ({packageInfo}) => {
     pos(XPosStart + 80, YPosStartText + 432),
     area(),
     anchor("center"),
-    outline(2, rgb(...SNYK_COLOR_PURPLE)),
-    color(...SNYK_COLOR_PURPLE),
+    outline(2, rgb(...SNYK_COLOR_PINK)),
+    color(...SNYK_COLOR_PINK),
   ]);
 
   // add a child object that displays the text
@@ -894,13 +907,22 @@ scene("lose", ({packageInfo}) => {
 
   btnRestart.onClick(restartGame);
 
+  const btnCTFWidth = 220
+  const btnCTFHeight = 55
   const btnSeeVulnerability = add([
-    rect(200, 55, { fill: false }),
+    rect(btnCTFWidth, btnCTFHeight, { radius: 4 }),
     pos(XPosStart + 290, YPosStartText + 432),
     area(),
     anchor("center"),
-    outline(2, rgb(0, 0, 0)),
-    color(0, 0, 0),
+    color(...SNYK_COLOR_ELECTRIC_BLUE),
+  ]);
+
+  // Cyan bottom accent line
+  add([
+    rect(btnCTFWidth, 4),
+    pos(XPosStart + 290, YPosStartText + 432 + btnCTFHeight/2 - 4),
+    anchor("center"),
+    color(...SNYK_COLOR_CYAN),
   ]);
 
   // add a child object that displays the text
@@ -912,6 +934,15 @@ scene("lose", ({packageInfo}) => {
       anchor("center"),
       color(255, 255, 255),
   ]);
+
+  btnSeeVulnerability.onHoverUpdate(() => {
+    btnSeeVulnerability.color = rgb(...SNYK_COLOR_CYAN);
+    setCursor("pointer");
+  });
+
+  btnSeeVulnerability.onHoverEnd(() => {
+    btnSeeVulnerability.color = rgb(...SNYK_COLOR_ELECTRIC_BLUE);
+  });
 
   btnSeeVulnerability.onClick(() => window.open('https://go.snyk.io/0115-ctf-101-isc2.html', '_blank'));
 
@@ -945,6 +976,15 @@ scene('credits-0', () => {
   gameMusic.stop()
   soundThunder.stop()
 
+  // Dark box behind logo and button to make them pop
+  add([
+    rect(850, 600, { radius: 10 }),
+    pos(width()/2, height()/2),
+    anchor('center'),
+    color(...SNYK_COLOR_BOX_DARK),
+    opacity(0.95),
+  ])
+
   add([
     pos(width()/2 + 200, 380),
     sprite("intro-players"),
@@ -954,7 +994,7 @@ scene('credits-0', () => {
   focus()
 
   add([
-    pos(width()/2, height()/2 - 100),
+    pos(width()/2, height()/2 - 50),
     sprite("logo"),
     rotate(0),
     area(),
@@ -963,15 +1003,23 @@ scene('credits-0', () => {
   ])
 
   const txt = 'PRESS SPACE TO START'
+  const btnWidth = 250
+  const btnHeight = 55
   const btn = add([
-    rect(250, 55, { fill: false }),
-    // pos(p),
+    rect(btnWidth, btnHeight, { radius: 4 }),
     pos(width()/2, height()/2 + 180),
     area(),
     scale(1),
     anchor("center"),
-    outline(2, rgb(...SNYK_COLOR_PURPLE)),
-    color(...SNYK_COLOR_PURPLE),
+    color(...SNYK_COLOR_ELECTRIC_BLUE),
+  ]);
+
+  // Cyan bottom accent line
+  add([
+    rect(btnWidth, 4),
+    pos(width()/2, height()/2 + 180 + btnHeight/2 - 4),
+    anchor("center"),
+    color(...SNYK_COLOR_CYAN),
   ]);
 
   // add a child object that displays the text
@@ -985,15 +1033,12 @@ scene('credits-0', () => {
   ]);
 
   btn.onHoverUpdate(() => {
-    const t = time() * 10;
-    btn.outline = { width: 2, color: rgb(wave(0, 255, t), wave(0, 255, t + 2), wave(0, 255, t + 4)) };
-    // btn.scale = vec2(1.2);
+    btn.color = rgb(...SNYK_COLOR_CYAN);
     setCursor("pointer");
-});
+  });
 
   btn.onHoverEnd(() => {
-      // btn.scale = vec2(1);
-      btn.outline = { width: 2, color: rgb(...SNYK_COLOR_PURPLE) };
+      btn.color = rgb(...SNYK_COLOR_ELECTRIC_BLUE);
   });
 
   btn.onClick(startGame);
