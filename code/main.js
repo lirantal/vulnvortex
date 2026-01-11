@@ -335,7 +335,7 @@ scene("game", () => {
   playerProtected = false
   packagesAnimType = 'regular'
 
-  let JUMP_FORCE = 705
+  let JUMP_FORCE = 785
   const FLOOR_HEIGHT = 60
   const MOVE_SPEED = 200
   
@@ -664,7 +664,7 @@ scene("game", () => {
         add([
           sprite("rail2"),
           anchor('botleft'),
-          pos(width() + 50, height() - (FLOOR_HEIGHT * 4)),
+          pos(width() + 50, height() - (FLOOR_HEIGHT * 3)),
           move(LEFT, 180),
           "rail",
           scale(5),
@@ -685,7 +685,7 @@ scene("game", () => {
           sprite("Patch-Jumper"),
           area(),
           anchor('botleft'),
-          pos(width(), height() - (FLOOR_HEIGHT * 2.5)),
+          pos(width(), height() - (FLOOR_HEIGHT * 2)),
           move(LEFT, 200),
           "Patch-Jumper",
           fixed(),
