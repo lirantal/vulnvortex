@@ -44,6 +44,10 @@ loadFont('jersey', '/fonts/Jersey10-Regular.ttf');
 
 loadSprite("background", "sprites/bg-snyk-terrain.png")
 
+// Cloud sprites for background parallax effect
+loadSprite("cloud1", "sprites/cloud1.png")
+loadSprite("cloud2", "sprites/cloud2.png")
+
 loadSprite('share-linkedin', 'sprites/8bit-li.png')
 loadSprite('share-twitter', 'sprites/8bit-tw.png')
 loadSprite('share-bluesky', 'sprites/8bit-bs.svg')
@@ -344,6 +348,48 @@ scene("game", () => {
     pos(0, 0),
     scale(0.50)
   ])
+
+  // Cloud parallax system - slower movement creates depth effect
+  const CLOUD_SPEED_MIN = 30
+  const CLOUD_SPEED_MAX = 60
+  const cloudTypes = ["cloud1", "cloud2"]
+
+  function spawnCloud(initialX = null) {
+    const cloudType = cloudTypes[randi(0, cloudTypes.length)]
+    const cloudSpeed = rand(CLOUD_SPEED_MIN, CLOUD_SPEED_MAX)
+    const cloudY = rand(40, 180)
+    const cloudScale = rand(0.15, 0.3)
+    const cloudOpacity = rand(0.5, 0.8)
+    const startX = initialX !== null ? initialX : width() + rand(50, 150)
+
+    add([
+      sprite(cloudType),
+      pos(startX, cloudY),
+      move(LEFT, cloudSpeed),
+      scale(cloudScale),
+      opacity(cloudOpacity),
+      "cloud",
+    ])
+  }
+
+  // Spawn initial clouds at various positions across the screen
+  for (let i = 0; i < 2; i++) {
+    spawnCloud(rand(0, width()))
+  }
+
+  // Periodically spawn new clouds from the right
+  loop(12, () => {
+    spawnCloud()
+  })
+
+  // Clean up clouds that drift off-screen
+  onUpdate("cloud", (cloud) => {
+    if (cloud.pos.x < -200) {
+      destroy(cloud)
+      // Spawn a replacement cloud
+      spawnCloud()
+    }
+  })
 
   const scoreLabel = add([
     text(score, {
