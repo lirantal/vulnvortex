@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>VulnVortex by Snyk</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #000;
+      }
+
+      .canvas-holder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #game {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="canvas-holder">
+      <canvas id="game"></canvas>
+    </div>
+
+    <script>
+      // Initialize dataLayer to prevent errors (GTM not loaded in stripped version)
+      window.dataLayer = window.dataLayer || [];
+    </script>
+    {{kaboom}}
+    <script>
+      // Enable game immediately (no consent dialog in stripped version)
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("game").style.cursor = "auto";
+        document.getElementById("game").style.pointerEvents = "auto";
+      });
+    </script>
+  </body>
+</html>

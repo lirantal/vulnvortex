@@ -72,6 +72,10 @@ function buildGame() {
   }
 
   fs.writeFileSync("dist/index.html", template.replace("{{kaboom}}", code));
+
+  // Also build the stripped game-only version
+  const gameTemplate = fs.readFileSync("template-game.html", "utf-8");
+  fs.writeFileSync("dist/game.html", gameTemplate.replace("{{kaboom}}", code));
 }
 
 // server stuff
@@ -139,6 +143,13 @@ app.get("/", (req, res) => {
   err = null;
   buildGame();
   res.sendFile(__dirname + "/dist/index.html");
+  render();
+});
+
+app.get("/game.html", (req, res) => {
+  err = null;
+  buildGame();
+  res.sendFile(__dirname + "/dist/game.html");
   render();
 });
 

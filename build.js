@@ -56,6 +56,10 @@ function buildGame() {
   }
 
   fs.writeFileSync("public/index.html", template.replace("{{kaboom}}", code));
+
+  // Also build the stripped game-only version
+  const gameTemplate = fs.readFileSync("template-game.html", "utf-8");
+  fs.writeFileSync("public/game.html", gameTemplate.replace("{{kaboom}}", code));
 }
 
 function copyDir(src, dest) {
