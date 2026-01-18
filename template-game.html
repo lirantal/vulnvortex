@@ -29,15 +29,17 @@
 
       #game {
         display: block;
-        max-width: 100%;
-        max-height: 100%;
+        cursor: auto;
+        pointer-events: auto;
+        touch-action: manipulation;
+        /* Let kaplay's letterbox mode handle sizing - don't override with CSS scaling */
       }
     </style>
   </head>
 
   <body>
     <div class="canvas-holder">
-      <canvas id="game"></canvas>
+      <canvas id="game" tabindex="0"></canvas>
     </div>
 
     <script>
@@ -46,11 +48,25 @@
     </script>
     {{kaboom}}
     <script>
-      // Enable game immediately (no consent dialog in stripped version)
-      document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("game").style.cursor = "auto";
-        document.getElementById("game").style.pointerEvents = "auto";
-      });
+      // Ensure canvas receives focus for keyboard events
+      (function() {
+        var canvas = document.getElementById("game");
+        // Focus canvas on any click/touch to ensure keyboard events work
+        canvas.addEventListener("click", function() {
+          canvas.focus();
+        });
+        canvas.addEventListener("touchstart", function() {
+          canvas.focus();
+        }, { passive: true });
+        // Auto-focus on load
+        if (document.readyState === "complete") {
+          canvas.focus();
+        } else {
+          window.addEventListener("load", function() {
+            canvas.focus();
+          });
+        }
+      })();
     </script>
   </body>
 </html>

@@ -36,6 +36,7 @@ kaplay({
   height: 720,
   background: [68, 28, 153],  // #441C99 - brand purple to match website
   scale: 1,
+  letterbox: true,  // Properly handles scaling and mouse coordinates when canvas is resized
   canvas: document.getElementById('game'),
 })
 
@@ -1090,10 +1091,6 @@ scene('credits-0', () => {
   btn.onClick(startGame);
   onKeyPress('space', startGame);
 
-})
-
-onKeyPress('space', () => {
-  startGame();
 })
 
 function startGame() {
