@@ -34,7 +34,7 @@ kaplay({
   crisp: false,
   width: 1080,
   height: 720,
-  background: [68, 28, 153],  // #441C99 - brand purple to match website
+  background: [211, 92, 121],  // #D35C79 - pink to match registration page
   scale: 1,
   letterbox: true,  // Properly handles scaling and mouse coordinates when canvas is resized
   canvas: document.getElementById('game'),
@@ -796,11 +796,11 @@ scene("lose", ({packageInfo}) => {
   
   XPosStart = 80 * 3
 
-  // add Snyk background
+  // add Snyk background - solid color rectangle matching registration page (#D35C79)
   add([
-    sprite("background-menu"),
+    rect(width(), height()),
     pos(0, 0),
-    scale(0.4)
+    color(211, 92, 121),
   ])
 
   // Dark box behind content to make text pop
@@ -1013,11 +1013,11 @@ scene('credits-0', () => {
     'url': url.href,
   });
 
-  // add Snyk background
+  // add Snyk background - solid color rectangle matching registration page (#D35C79)
   add([
-    sprite("background-menu"),
+    rect(width(), height()),
     pos(0, 0),
-    scale(0.4)
+    color(211, 92, 121),
   ])
 
   gameMusic.stop()
